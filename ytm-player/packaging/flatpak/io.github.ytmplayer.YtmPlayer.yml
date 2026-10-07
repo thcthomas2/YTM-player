@@ -1,0 +1,30 @@
+# UNTESTED starting point. Needs flatpak-builder and a python-deps.json generated with:
+#   flatpak-pip-generator ytmusicapi yt-dlp numpy
+# Build from a clean copy of the project (without .venv).
+app-id: io.github.ytmplayer.YtmPlayer
+runtime: org.kde.Platform
+runtime-version: '6.8'
+sdk: org.kde.Sdk
+base: io.qt.PySide.BaseApp
+base-version: '6.8'
+command: ytm-player
+finish-args:
+  - --share=network
+  - --share=ipc
+  - --socket=pulseaudio
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+modules:
+  - python-deps.json
+  - name: ytm-player
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/share/ytm-player
+      - cp -r main.py backend.py qml assets /app/share/ytm-player/
+      - install -Dm755 packaging/flatpak/ytm-player.sh /app/bin/ytm-player
+      - install -Dm644 assets/ytm-player.png /app/share/icons/hicolor/256x256/apps/io.github.ytmplayer.YtmPlayer.png
+      - install -Dm644 packaging/flatpak/io.github.ytmplayer.YtmPlayer.desktop /app/share/applications/io.github.ytmplayer.YtmPlayer.desktop
+    sources:
+      - type: dir
+        path: ../..

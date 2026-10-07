@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=YTM Player
+Comment=YouTube Music client
+Exec=ytm-player
+Icon=io.github.ytmplayer.YtmPlayer
+Terminal=false
+Categories=AudioVideo;Audio;Player;
